@@ -88,13 +88,15 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func getPopularItems(contentType: ContentType) async {
-            do {
-                IMDBItems = try await imdbConnector.getPopular(contentType: contentType)
-            } catch {
-                let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
+        do {
+            IMDBItems = try await imdbConnector.getPopular(contentType: contentType)
+        } catch {
+            let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
+            DispatchQueue.main.async{
                 self.present(alert, animated: true, completion: nil)
             }
+        }
     }
     
     // MARK: - Collection view data source and delegate
@@ -109,6 +111,7 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
     func collectionView(_ collectionView: UICollectionView,cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell( withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! MoviePosterCell // Get the cell
         let movie = IMDBItems[indexPath.item] // Get the movie at the current index
+        cell.item = movie
         cell.movieTitleLabel.text = movie.title
 
         // If we have the poster image, set it
@@ -133,7 +136,7 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
         // otherwise a race condidion may cause the image to be saved but not displayed
         if movieCell.moviePosterImageView.image != nil { return }
         Task {
-            let posterImage = try! await movie.fetchPoster()
+            let posterImage = try! await movie.thumbnailPoster.fetch()
                 posterImagesForIMDBId[movie.imdbID] = posterImage
             collectionView.reloadItems(at: [indexPath])
         }
@@ -145,7 +148,7 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
             let movie = IMDBItems[indexPath.item]
             if posterImagesForIMDBId[movie.imdbID] != nil { return }
             Task {
-                let posterImage = try! await movie.fetchPoster()
+                let posterImage = try! await movie.thumbnailPoster.fetch()
                     posterImagesForIMDBId[movie.imdbID] = posterImage
             }}
     }
@@ -168,6 +171,15 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
     // Set the line spacing for the section
     func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToDetail" {
+            if let destinationVC = segue.destination as? ItemDetailViewController,
+               let cell = sender as? MoviePosterCell{
+                destinationVC.item = cell.item
+            }
+        }
     }
     
 }

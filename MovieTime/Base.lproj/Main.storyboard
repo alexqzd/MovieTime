@@ -24,7 +24,117 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M4W-4F-x08" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1870" y="104"/>
+            <point key="canvasLocation" x="812" y="-196"/>
+        </scene>
+        <!--Item Detail View Controller-->
+        <scene sceneID="bdc-ev-fbQ">
+            <objects>
+                <viewController id="xUn-fs-R7F" customClass="ItemDetailViewController" customModule="MovieTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VVx-fB-nPp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fGr-QF-boh">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="256"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="256" id="nUI-wG-L9N"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="248" axis="vertical" distribution="fillProportionally" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="bvX-pt-2vB" userLabel="Title Stack">
+                                <rect key="frame" x="8" y="264" width="398" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="La Rosa de Guadalupe" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0N-FU-f8z">
+                                        <rect key="frame" x="78.5" y="0.0" width="241.5" height="30"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nada es lo que parece" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMM-gN-VZB">
+                                        <rect key="frame" x="131.5" y="34" width="135.5" height="16"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="2cN-nM-7wf">
+                                <rect key="frame" x="20" y="334" width="374" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycO-zi-Cdu">
+                                        <rect key="frame" x="0.0" y="4.5" width="177" height="31"/>
+                                        <color key="tintColor" systemColor="systemGreenColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Rent for $2.99"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFg-b1-IhG">
+                                        <rect key="frame" x="197" y="4.5" width="177" height="31"/>
+                                        <color key="tintColor" systemColor="systemYellowColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Add to favorites"/>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="tdr-W8-dtN"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="CFX-xf-emc">
+                                <rect key="frame" x="20" y="394" width="392" height="244"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Top rated TV #65 | Won 7 Primetime Emmys52 wins &amp; 103 nominations total" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZG9-eO-Rxa">
+                                        <rect key="frame" x="0.0" y="0.0" width="392" height="41"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Crime, Drama, Mystery" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="svT-63-Uli">
+                                        <rect key="frame" x="0.0" y="61" width="392" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQt-Pb-VAd">
+                                        <rect key="frame" x="0.0" y="101.5" width="392" height="142.5"/>
+                                        <string key="text">A slice of heaven. O for awesome, this chocka full cuzzie is as rip-off as a cracker. Meanwhile, in behind the bicycle shed, Hercules Morse, as big as a horse and Mrs Falani were up to no good with a bunch of crook pikelets. Meanwhile, at the black singlet woolshed party, not even au, sort your drinking out.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cmn-4y-Ffy"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="fGr-QF-boh" firstAttribute="top" secondItem="cmn-4y-Ffy" secondAttribute="top" id="7cH-eQ-0Hd"/>
+                            <constraint firstItem="2cN-nM-7wf" firstAttribute="top" secondItem="bvX-pt-2vB" secondAttribute="bottom" constant="20" id="BlE-qL-raP"/>
+                            <constraint firstItem="bvX-pt-2vB" firstAttribute="leading" secondItem="cmn-4y-Ffy" secondAttribute="leading" constant="8" id="K59-Ck-zR4"/>
+                            <constraint firstItem="bvX-pt-2vB" firstAttribute="top" secondItem="fGr-QF-boh" secondAttribute="bottom" constant="8" id="OEL-51-ucv"/>
+                            <constraint firstItem="CFX-xf-emc" firstAttribute="top" secondItem="2cN-nM-7wf" secondAttribute="bottom" constant="20" id="XJw-FX-rEG"/>
+                            <constraint firstAttribute="trailing" secondItem="bvX-pt-2vB" secondAttribute="trailing" constant="8" id="amY-Tw-Enz"/>
+                            <constraint firstItem="cmn-4y-Ffy" firstAttribute="trailing" secondItem="2cN-nM-7wf" secondAttribute="trailing" constant="20" id="bKs-gj-PhK"/>
+                            <constraint firstItem="fGr-QF-boh" firstAttribute="trailing" secondItem="cmn-4y-Ffy" secondAttribute="trailing" id="ihy-yb-efD"/>
+                            <constraint firstItem="fGr-QF-boh" firstAttribute="leading" secondItem="cmn-4y-Ffy" secondAttribute="leading" id="mDN-sz-C3z"/>
+                            <constraint firstItem="2cN-nM-7wf" firstAttribute="leading" secondItem="cmn-4y-Ffy" secondAttribute="leading" constant="20" id="nnS-Fc-g5u"/>
+                            <constraint firstItem="CFX-xf-emc" firstAttribute="leading" secondItem="cmn-4y-Ffy" secondAttribute="leading" constant="20" id="sSz-Xa-dPj"/>
+                            <constraint firstItem="cmn-4y-Ffy" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="CFX-xf-emc" secondAttribute="bottom" constant="20" id="twu-US-E0w"/>
+                            <constraint firstAttribute="trailing" secondItem="CFX-xf-emc" secondAttribute="trailing" constant="2" id="udH-p7-fut"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="IZf-c1-aSL"/>
+                    <connections>
+                        <outlet property="actionButton" destination="ycO-zi-Cdu" id="0aO-Ru-Rpp"/>
+                        <outlet property="awardsLabel" destination="ZG9-eO-Rxa" id="8RT-ij-45w"/>
+                        <outlet property="descriptionLabel" destination="pQt-Pb-VAd" id="EJe-a3-KCk"/>
+                        <outlet property="detailLabel" destination="YMM-gN-VZB" id="tQO-en-ews"/>
+                        <outlet property="detailsStackView" destination="CFX-xf-emc" id="3Az-fD-wOI"/>
+                        <outlet property="genereLabel" destination="svT-63-Uli" id="lQH-Ev-Oxl"/>
+                        <outlet property="headerImageView" destination="fGr-QF-boh" id="e4w-Wh-zyR"/>
+                        <outlet property="titleLabel" destination="p0N-FU-f8z" id="1Vf-7f-h7w"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kg2-8M-xEE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="21.739130434782609" y="545.75892857142856"/>
         </scene>
         <!--Cart-->
         <scene sceneID="HpR-Qn-shX">
@@ -40,7 +150,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Ev-aY-Skg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1870" y="-627"/>
+            <point key="canvasLocation" x="812" y="546"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="HWw-il-ijy">
@@ -59,7 +169,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0R6-DF-PV8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="23" y="-245"/>
+            <point key="canvasLocation" x="22" y="-183"/>
         </scene>
         <!--Browse-->
         <scene sceneID="Ckd-wp-jES">
@@ -112,6 +222,7 @@
                                         <connections>
                                             <outlet property="moviePosterImageView" destination="CmB-o0-9Eu" id="9BZ-6b-KJO"/>
                                             <outlet property="movieTitleLabel" destination="agi-kL-Wsg" id="Wm8-66-5dF"/>
+                                            <segue destination="xUn-fs-R7F" kind="show" identifier="goToDetail" id="85N-9Z-GN0"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -173,7 +284,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ob5-qU-hpX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="942" y="-245"/>
+            <point key="canvasLocation" x="-770" y="546"/>
         </scene>
     </scenes>
     <resources>
@@ -183,6 +294,12 @@
         <image name="square.grid.2x2" catalog="system" width="128" height="114"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

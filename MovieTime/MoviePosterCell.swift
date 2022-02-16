@@ -10,4 +10,5 @@ import UIKit
 class MoviePosterCell: UICollectionViewCell {
     @IBOutlet weak var moviePosterImageView: UIImageView!
     @IBOutlet weak var movieTitleLabel: UILabel!
+    var item: IMBDItem?
 }

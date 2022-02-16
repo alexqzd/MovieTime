@@ -34,7 +34,7 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
             UIAction(title: "Movies", image: UIImage(systemName: "video"), handler: { (_) in
                 self.currentContent = .Movie
                 Task {
-                    self.IMDBItems = try! await self.imdbConnector.getPopular(contentType: self.currentContent)
+                    await self.getPopularItems(contentType: self.currentContent)
                     self.browseCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
                         {
                             self.browseCollectionView.reloadSections(IndexSet(integer: 0))
@@ -45,7 +45,7 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
             UIAction(title: "TV Shows", image: UIImage(systemName: "tv"), handler: { [self] (_) in
                 self.currentContent = .TVShow
                 Task {
-                    self.IMDBItems = try! await self.imdbConnector.getPopular(contentType: self.currentContent)
+                    await self.getPopularItems(contentType: self.currentContent)
                     self.browseCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
                         {
                             self.browseCollectionView.reloadSections(IndexSet(integer: 0))
@@ -77,7 +77,7 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
 
         // Load data from the API
         Task {
-            IMDBItems = try! await imdbConnector.getPopular(contentType: currentContent)
+            await getPopularItems(contentType: currentContent)
             browseCollectionView.reloadData()
         }
     }
@@ -85,6 +85,16 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
     override func didReceiveMemoryWarning() {
         // Delete stuff that we can fetch again later
         posterImagesForIMDBId.removeAll()
+    }
+    
+    func getPopularItems(contentType: ContentType) async {
+            do {
+                IMDBItems = try await imdbConnector.getPopular(contentType: contentType)
+            } catch {
+                let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
+                self.present(alert, animated: true, completion: nil)
+            }
     }
     
     // MARK: - Collection view data source and delegate

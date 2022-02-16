@@ -36,6 +36,13 @@ class IMDBConnect {
         }
         
         let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+        
+        let errorMessage = json["errorMessage"] as? String
+        guard errorMessage == "" else {
+            print("Unexpected error")
+            throw IMDBError.apiError(message: json["errorMessage"] as! String)
+        }
+        
         let jsonItems = json["items"] as! [Any]
         for jsonItem in jsonItems {
             let item = jsonItem as! [String: Any]
@@ -74,4 +81,8 @@ struct IMBDItem {
         guard let image = UIImage(data: data) else { throw URLError(.cannotDecodeContentData) }
         return image
     }
+}
+
+enum IMDBError: Error {
+    case apiError(message: String)
 }

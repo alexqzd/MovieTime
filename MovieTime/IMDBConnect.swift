@@ -39,10 +39,19 @@ class IMDBConnect {
         let jsonItems = json["items"] as! [Any]
         for jsonItem in jsonItems {
             let item = jsonItem as! [String: Any]
+            
+            var imageURL = item["image"] as! String
+            
+            if let index = (imageURL.range(of: "._")?.lowerBound) // find image format separator
+            {
+                imageURL = String(imageURL.prefix(upTo: index)) // remove default image format
+                imageURL += "._V1_UX256_CR0,3,256,352_AL_.jpg" // get smaller thumbnail URL
+            }
+            
             let itemObj = IMBDItem(title: item["title"] as! String,
-                                       year: item["year"] as! String,
-                                       imageURL: item["image"] as! String,
-                                       imdbID: item["id"] as! String)
+                                   year: item["year"] as! String,
+                                   imageURL: imageURL,
+                                   imdbID: item["id"] as! String)
             items.append(itemObj)
         }
         return items
@@ -55,7 +64,7 @@ struct IMBDItem {
     var year: String
     var imageURL: String
     var imdbID: String
-
+    
     func fetchPoster() async throws -> UIImage {
         let url = URL(string: imageURL)!
         let (data, response) = try await URLSession.shared.data(from: url)

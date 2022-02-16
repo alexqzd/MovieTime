@@ -147,7 +147,6 @@ class BrowseViewController: UIViewController, UICollectionViewDelegate, UICollec
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
-        
         return CGSize(width: widthPerItem, height: widthPerItem*1.4889815366) // 1.4889815366 is the aspect ratio of the poster images
     }
     

@@ -9,21 +9,25 @@
 /* Begin PBXBuildFile section */
 		A8E3581A27BB1CBF0049D77B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3581927BB1CBF0049D77B /* AppDelegate.swift */; };
 		A8E3581C27BB1CBF0049D77B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3581B27BB1CBF0049D77B /* SceneDelegate.swift */; };
-		A8E3581E27BB1CBF0049D77B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3581D27BB1CBF0049D77B /* ViewController.swift */; };
+		A8E3581E27BB1CBF0049D77B /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3581D27BB1CBF0049D77B /* BrowseViewController.swift */; };
 		A8E3582127BB1CBF0049D77B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8E3581F27BB1CBF0049D77B /* Main.storyboard */; };
 		A8E3582327BB1CC00049D77B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8E3582227BB1CC00049D77B /* Assets.xcassets */; };
 		A8E3582627BB1CC00049D77B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8E3582427BB1CC00049D77B /* LaunchScreen.storyboard */; };
+		A8E3582E27BC41E40049D77B /* MoviePosterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3582D27BC41E30049D77B /* MoviePosterCell.swift */; };
+		A8E3583027BC49AE0049D77B /* IMDBConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3582F27BC49AE0049D77B /* IMDBConnect.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A8E3581627BB1CBF0049D77B /* MovieTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8E3581927BB1CBF0049D77B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8E3581B27BB1CBF0049D77B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A8E3581D27BB1CBF0049D77B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A8E3581D27BB1CBF0049D77B /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		A8E3582027BB1CBF0049D77B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A8E3582227BB1CC00049D77B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8E3582527BB1CC00049D77B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8E3582727BB1CC00049D77B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A8E3582D27BC41E30049D77B /* MoviePosterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviePosterCell.swift; sourceTree = "<group>"; };
+		A8E3582F27BC49AE0049D77B /* IMDBConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMDBConnect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +62,9 @@
 			children = (
 				A8E3581927BB1CBF0049D77B /* AppDelegate.swift */,
 				A8E3581B27BB1CBF0049D77B /* SceneDelegate.swift */,
-				A8E3581D27BB1CBF0049D77B /* ViewController.swift */,
+				A8E3581D27BB1CBF0049D77B /* BrowseViewController.swift */,
+				A8E3582F27BC49AE0049D77B /* IMDBConnect.swift */,
+				A8E3582D27BC41E30049D77B /* MoviePosterCell.swift */,
 				A8E3581F27BB1CBF0049D77B /* Main.storyboard */,
 				A8E3582227BB1CC00049D77B /* Assets.xcassets */,
 				A8E3582427BB1CC00049D77B /* LaunchScreen.storyboard */,
@@ -138,7 +144,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8E3581E27BB1CBF0049D77B /* ViewController.swift in Sources */,
+				A8E3583027BC49AE0049D77B /* IMDBConnect.swift in Sources */,
+				A8E3581E27BB1CBF0049D77B /* BrowseViewController.swift in Sources */,
+				A8E3582E27BC41E40049D77B /* MoviePosterCell.swift in Sources */,
 				A8E3581A27BB1CBF0049D77B /* AppDelegate.swift in Sources */,
 				A8E3581C27BB1CBF0049D77B /* SceneDelegate.swift in Sources */,
 			);
@@ -295,6 +303,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -306,7 +315,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -323,6 +332,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -334,7 +344,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

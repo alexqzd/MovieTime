@@ -14,7 +14,7 @@ class BrowseViewController: UIViewController, BrowseViewDelegate {
 
     var currentContent = ContentType.Movie // Content type to display (Movies / TV Shows)
     
-    let imdbConnector = IMDBConnect()
+    let imdbConnector = IMDBConnect.sharedInstance
 
     // MARK: - Header
     

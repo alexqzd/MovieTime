@@ -12,6 +12,14 @@ class IMDBConnect {
     private let IMDBAPIKey = "k_vi16rirf"
     private let IMDBBaseURL = "https://imdb-api.com/en/API/"
     
+    static let sharedInstance = IMDBConnect()
+    
+    private(set) var favorites = Set<IMBDItem>()
+    
+    init() {
+        loadFavorites()
+    }
+    
     // Returns a complete URL to query for the passed query string
     private func constructAPIURL(withQuery query: String, arguments: String = "") -> URL? {
         let urlString = IMDBBaseURL + query + "/" + IMDBAPIKey + "/" + arguments
@@ -120,29 +128,29 @@ class IMDBConnect {
     // Returns arrays of poster images and backdrop banners for the passed IMBD item
     func getImages(for imdbID: String) async throws -> PosterImages {
         let url = constructAPIURL(withQuery: "Posters", arguments: imdbID)!
-
+        
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             print("Error connecting to IMDB API")
             throw URLError(.badServerResponse)
         }
-
+        
         let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-
+        
         let errorMessage = json["errorMessage"] as? String
         guard errorMessage == "" || errorMessage == nil else {
             print("Unexpected error on id \(imdbID)")
             throw IMDBError.apiError(message: json["errorMessage"] as? String ?? "Unknown error")
         }
-
-
+        
+        
         let postersJSON = json["posters"] as! [[String: Any]]
         let backdropsJSON = json["backdrops"] as! [[String: Any]]
         
         var fetchablePosters = [FetchableImage]()
         var fetchableBackdrops = [FetchableImage]()
-
-
+        
+        
         for jsonPoster in postersJSON {
             if let imageURL = jsonPoster["link"] as? String {
                 fetchablePosters.append(FetchableImage(imageURL: imageURL))
@@ -158,9 +166,59 @@ class IMDBConnect {
         
     }
     
+    func addFavorite(item: IMBDItem) {
+        favorites.insert(item)
+        print("ading \(item.title) to favs")
+        saveFavorites()
+    }
+    
+    func removeFavorite(item: IMBDItem) {
+        favorites.remove(item)
+        print("removing \(item.title) from favs")
+        saveFavorites()
+    }
+    
+    private func saveFavorites() {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("favorites")
+        
+        do {
+            let array: [IMBDItem] = favorites.sorted(by: {$0.imdbID > $1.imdbID})
+            
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(array)
+            try data.write(to: path)
+        } catch {
+            print("ERROR: \(error)")
+        }
+    }
+    
+    @objc private func loadFavorites() {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("favorites")
+        guard let data = try? Data(contentsOf: path) else {
+            print("No favorites stored")
+            return }
+        let decoder = JSONDecoder()
+        
+        if let savedFavorites = try? decoder.decode([IMBDItem].self, from: data) {
+            print("Saved favorites:")
+            for fav in savedFavorites {
+                print(fav.title)
+                favorites.insert(fav)
+            }
+            
+        } else {
+            print("No favorites stored")
+            
+        }
+    }
+    
 }
 
-struct IMBDItem {
+struct IMBDItem: Codable, Hashable {
+    static func == (lhs: IMBDItem, rhs: IMBDItem) -> Bool {
+        lhs.imdbID == rhs.imdbID
+    }
+    
     var title: String
     var year: String
     var fullResPoster: FetchableImage
@@ -189,7 +247,7 @@ struct IMBDItemDetail {
 }
 
 // Struct to hold an url to an image and a method to fetch it
-struct FetchableImage {
+struct FetchableImage: Codable, Hashable {
     let imageURL: String
     
     init(imageURL: String) {

@@ -109,6 +109,9 @@
                                         <color key="tintColor" systemColor="systemYellowColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Add to favorites"/>
+                                        <connections>
+                                            <action selector="toggleFavorite:" destination="xUn-fs-R7F" eventType="touchUpInside" id="nM1-A0-wfq"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -165,6 +168,7 @@
                         <outlet property="descriptionLabel" destination="pQt-Pb-VAd" id="EJe-a3-KCk"/>
                         <outlet property="detailLabel" destination="YMM-gN-VZB" id="tQO-en-ews"/>
                         <outlet property="detailsStackView" destination="CFX-xf-emc" id="3Az-fD-wOI"/>
+                        <outlet property="favoritesButton" destination="WFg-b1-IhG" id="z5G-h9-jWX"/>
                         <outlet property="genereLabel" destination="svT-63-Uli" id="lQH-Ev-Oxl"/>
                         <outlet property="headerImageView" destination="fGr-QF-boh" id="e4w-Wh-zyR"/>
                         <outlet property="titleLabel" destination="p0N-FU-f8z" id="1Vf-7f-h7w"/>
@@ -286,7 +290,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="kfV-vO-1CR"/>
+        <segue reference="vh0-BB-bzn"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="cart" catalog="system" width="128" height="102"/>

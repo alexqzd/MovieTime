@@ -15,12 +15,23 @@ class ItemDetailViewController: UIViewController {
     @IBOutlet weak var genereLabel: UILabel!
     @IBOutlet weak var awardsLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var favoritesButton: UIButton!
     @IBOutlet weak var headerImageView: UIImageView!
     @IBOutlet weak var detailsStackView: UIStackView!
     
     var item: IMBDItem!
     
-    let imdb = IMDBConnect()
+    let imdb = IMDBConnect.sharedInstance
+    
+    @IBAction func toggleFavorite(_ sender: UIButton) {
+        if imdb.favorites.contains(item) {
+            imdb.removeFavorite(item: item)
+            favoritesButton.setTitle("Add favorite", for: .normal)
+        } else {
+            imdb.addFavorite(item: item)
+            favoritesButton.setTitle("Remove favorite", for: .normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +40,11 @@ class ItemDetailViewController: UIViewController {
         headerImageView.backgroundColor = .lightGray
         detailLabel.text = ""
         detailsStackView.isHidden = true
+        if imdb.favorites.contains(item) {
+            favoritesButton.setTitle("Remove favorite", for: .normal)
+        } else {
+            favoritesButton.setTitle("Add favorite", for: .normal)
+        }
         Task {
             do {
                 var image = try? await imdb.getImages(for: item.imdbID).backdrops.randomElement()?.fetch()

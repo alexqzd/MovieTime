@@ -53,8 +53,13 @@ class ItemDetailViewController: UIViewController {
         Task {
             do {
                 let details = try await imdb.getTitleDetail(for: item.imdbID)
+                
+                detailLabel.text = details.tagline
+                descriptionLabel.text = details.plot
+                genereLabel.text = details.genres
+                awardsLabel.text = details.awards
+                
                 DispatchQueue.main.async{
-                    
                     UIView.transition(with: self.detailsStackView,
                                       duration: 0.7,
                                       options: .transitionCrossDissolve,

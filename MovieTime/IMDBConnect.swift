@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class IMDBConnect {
-    private let IMDBAPIKey = "k_2tcj88j3"
+    private let IMDBAPIKey = "k_vi16rirf"
     private let IMDBBaseURL = "https://imdb-api.com/en/API/"
     
     // Returns a complete URL to query for the passed query string
@@ -157,6 +157,11 @@ class IMDBConnect {
         
     }
     
+//    func exampleIMBDItems() -> [IMBDItem] {
+//        var items = [IMBDItem]()
+//        for
+//    }
+    
 }
 
 struct IMBDItem {
@@ -213,4 +218,9 @@ struct PosterImages {
 
 enum IMDBError: Error {
     case apiError(message: String)
+}
+
+enum ContentType {
+    case Movie
+    case TVShow
 }

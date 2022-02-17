@@ -22,7 +22,7 @@ class IMDBConnect {
     
     // Returns a complete URL to query for the passed query string
     private func constructAPIURL(withQuery query: String, arguments: String = "") -> URL? {
-        let urlString = IMDBBaseURL + query + "/" + IMDBAPIKey + "/" + arguments
+        let urlString = IMDBBaseURL + query + "/" + IMDBAPIKey + "/" + (arguments.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")
         return URL(string: urlString)
     }
     
@@ -125,6 +125,51 @@ class IMDBConnect {
         return itemObj
     }
     
+    func search(query: String) async throws -> [IMDBSearchResult] {
+        
+        var items = [IMDBSearchResult]()
+        let url = constructAPIURL(withQuery: "Search", arguments: query)!
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            print("Error connecting to IMDB API")
+            throw URLError(.badServerResponse)
+        }
+        
+        let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+        
+        let errorMessage = json["errorMessage"] as? String
+        guard errorMessage == "" || errorMessage == nil else {  // The API can return an empty error message or nil on success
+            print("Unexpected error")
+            throw IMDBError.apiError(message: json["errorMessage"] as? String ?? "Unknown error")
+        }
+        
+        let jsonItems = json["results"] as! [Any]
+        for jsonItem in jsonItems {
+            let item = jsonItem as! [String: Any]
+            
+            var imageURL = item["image"] as! String
+            let fullResPoster = FetchableImage(imageURL: imageURL)
+            var thumnailPoster: FetchableImage?
+            
+            if let index = (imageURL.range(of: "._")?.lowerBound) // find image format separator
+            {
+                imageURL = String(imageURL.prefix(upTo: index)) // remove default image format
+                imageURL += "._V1_UX256_CR0,3,256,352_AL_.jpg" // get smaller thumbnail URL
+                thumnailPoster = FetchableImage(imageURL: imageURL)
+            }
+            
+            let result = IMDBSearchResult(title: item["title"] as! String,
+                                          description: item["description"] as! String,
+                                          fullResPoster: fullResPoster,
+                                          thumbnailPoster: thumnailPoster ?? fullResPoster,
+                                          imdbID: item["id"] as! String)
+
+            items.append(result)
+        }
+        return items
+    }
+    
     // Returns arrays of poster images and backdrop banners for the passed IMBD item
     func getImages(for imdbID: String) async throws -> PosterImages {
         let url = constructAPIURL(withQuery: "Posters", arguments: imdbID)!
@@ -225,6 +270,35 @@ struct IMBDItem: Codable, Hashable {
     var thumbnailPoster: FetchableImage
     var imdbID: String
     var crew: String
+}
+
+struct IMDBSearchResult {
+    var title: String
+    var description: String
+    var fullResPoster: FetchableImage
+    var thumbnailPoster: FetchableImage
+    var imdbID: String
+    
+    // We dont want to fetch de full details for every result because
+    // we have limited API calls (100 per day)
+    func toPartialIMBDItem() -> IMBDItem {
+        return IMBDItem(title: title,
+                        year: "",
+                        fullResPoster: fullResPoster,
+                        thumbnailPoster: thumbnailPoster,
+                        imdbID: imdbID,
+                        crew: "")
+    }
+    
+    func fetchIMBDItem() async throws -> IMBDItem {
+        let details = try await IMDBConnect.sharedInstance.getTitleDetail(for: imdbID)
+        return IMBDItem(title: title,
+                        year: details.year,
+                        fullResPoster: fullResPoster,
+                        thumbnailPoster: thumbnailPoster,
+                        imdbID: imdbID,
+                        crew: details.stars)
+    }
 }
 
 struct IMBDItemDetail {

@@ -222,7 +222,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="bl4-l1-lJ1" userLabel="Header Stack View">
-                                <rect key="frame" x="0.0" y="52" width="414" height="123"/>
+                                <rect key="frame" x="0.0" y="52" width="414" height="72"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HWp-xv-fWd" userLabel="Button Stack View">
                                         <rect key="frame" x="0.0" y="0.0" width="120.5" height="72"/>
@@ -247,33 +247,32 @@
                                         </subviews>
                                         <edgeInsets key="layoutMargins" top="0.0" left="20" bottom="0.0" right="0.0"/>
                                     </stackView>
-                                    <searchBar contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="Uuu-dm-yWw">
-                                        <rect key="frame" x="0.0" y="72" width="414" height="51"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="51" id="7wS-tr-uqm"/>
-                                        </constraints>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </searchBar>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="Uuu-dm-yWw" firstAttribute="leading" secondItem="bl4-l1-lJ1" secondAttribute="leading" id="9Yf-CG-iYl"/>
-                                    <constraint firstAttribute="trailing" secondItem="Uuu-dm-yWw" secondAttribute="trailing" id="RSE-ck-Otx"/>
-                                </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wpV-mO-8lY" customClass="BrowseView" customModule="MovieTime" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="175" width="414" height="638"/>
+                                <rect key="frame" x="0.0" y="180" width="414" height="633"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OAS-Zl-IAA">
+                                <rect key="frame" x="0.0" y="124" width="414" height="56"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="2TS-3L-fUT"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="u0T-Rd-TVP"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="wpV-mO-8lY" firstAttribute="top" secondItem="OAS-Zl-IAA" secondAttribute="bottom" id="AWw-bs-u2d"/>
                             <constraint firstItem="bl4-l1-lJ1" firstAttribute="top" secondItem="u0T-Rd-TVP" secondAttribute="top" constant="8" id="BDY-pX-3L7"/>
                             <constraint firstItem="u0T-Rd-TVP" firstAttribute="trailing" secondItem="bl4-l1-lJ1" secondAttribute="trailing" id="Ero-cI-FXN"/>
+                            <constraint firstItem="OAS-Zl-IAA" firstAttribute="top" secondItem="bl4-l1-lJ1" secondAttribute="bottom" id="M9w-9R-ic0"/>
                             <constraint firstItem="u0T-Rd-TVP" firstAttribute="bottom" secondItem="wpV-mO-8lY" secondAttribute="bottom" id="N1c-JK-Nzt"/>
+                            <constraint firstItem="OAS-Zl-IAA" firstAttribute="leading" secondItem="u0T-Rd-TVP" secondAttribute="leading" id="Pda-PN-0m1"/>
                             <constraint firstItem="u0T-Rd-TVP" firstAttribute="trailing" secondItem="wpV-mO-8lY" secondAttribute="trailing" id="fuj-ag-2aE"/>
                             <constraint firstItem="wpV-mO-8lY" firstAttribute="leading" secondItem="u0T-Rd-TVP" secondAttribute="leading" id="gmw-Ow-9y1"/>
-                            <constraint firstItem="wpV-mO-8lY" firstAttribute="top" secondItem="bl4-l1-lJ1" secondAttribute="bottom" id="l68-6J-BC8"/>
+                            <constraint firstItem="OAS-Zl-IAA" firstAttribute="trailing" secondItem="u0T-Rd-TVP" secondAttribute="trailing" id="tXD-lk-Bk5"/>
                             <constraint firstItem="bl4-l1-lJ1" firstAttribute="leading" secondItem="u0T-Rd-TVP" secondAttribute="leading" id="y1U-fJ-Vg9"/>
                         </constraints>
                     </view>
@@ -281,12 +280,13 @@
                     <connections>
                         <outlet property="browseView" destination="wpV-mO-8lY" id="Hud-fc-hEj"/>
                         <outlet property="contentSelectionButton" destination="8xx-e1-dJO" id="5Me-4D-XDW"/>
+                        <outlet property="searchBar" destination="OAS-Zl-IAA" id="ik5-st-aEL"/>
                         <segue destination="xUn-fs-R7F" kind="show" identifier="goToDetail" id="vh0-BB-bzn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ob5-qU-hpX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="22" y="546"/>
+            <point key="canvasLocation" x="21.739130434782609" y="545.75892857142856"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

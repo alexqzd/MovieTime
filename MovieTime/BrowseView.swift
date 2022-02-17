@@ -29,6 +29,8 @@ class BrowseView: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlow
         left: 20.0,
         bottom: 0.0,
         right: 20.0)
+
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)

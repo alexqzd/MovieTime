@@ -38,7 +38,7 @@ class IMDBConnect {
         let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
         let errorMessage = json["errorMessage"] as? String
-        guard errorMessage == "" || errorMessage == nil else {
+        guard errorMessage == "" || errorMessage == nil else {  // The API can return an empty error message or nil on success
             print("Unexpected error")
             throw IMDBError.apiError(message: json["errorMessage"] as? String ?? "Unknown error")
         }
@@ -69,6 +69,7 @@ class IMDBConnect {
         return items
     }
     
+    // Returns the details of the passed IMBD item
     func getTitleDetail(for imdbID: String) async throws -> IMBDItemDetail {
         let url = constructAPIURL(withQuery: "Title", arguments: imdbID)!
         
@@ -81,11 +82,10 @@ class IMDBConnect {
         let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
         let errorMessage = json["errorMessage"] as? String
-        guard errorMessage == "" || errorMessage == nil else {
+        guard errorMessage == "" || errorMessage == nil else { // The API can return an empty error message or nil on success
             print("Unexpected error on id \(imdbID)")
             throw IMDBError.apiError(message: json["errorMessage"] as? String ?? "Unknown error")
         }
-        
         
         var imageURL = json["image"] as! String
         let fullResPoster = FetchableImage(imageURL: imageURL)
@@ -117,6 +117,7 @@ class IMDBConnect {
         return itemObj
     }
     
+    // Returns arrays of poster images and backdrop banners for the passed IMBD item
     func getImages(for imdbID: String) async throws -> PosterImages {
         let url = constructAPIURL(withQuery: "Posters", arguments: imdbID)!
 
@@ -157,11 +158,6 @@ class IMDBConnect {
         
     }
     
-//    func exampleIMBDItems() -> [IMBDItem] {
-//        var items = [IMBDItem]()
-//        for
-//    }
-    
 }
 
 struct IMBDItem {
@@ -192,6 +188,7 @@ struct IMBDItemDetail {
     var tagline: String?
 }
 
+// Struct to hold an url to an image and a method to fetch it
 struct FetchableImage {
     let imageURL: String
     

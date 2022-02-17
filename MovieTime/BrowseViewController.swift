@@ -15,6 +15,8 @@ class BrowseViewController: UIViewController, BrowseViewDelegate {
     var currentContent = ContentType.Movie // Content type to display (Movies / TV Shows)
     
     let imdbConnector = IMDBConnect()
+
+    // MARK: - Header
     
     // Items to display on the content type selector button
     var menuItems: [UIAction] {
@@ -72,6 +74,7 @@ class BrowseViewController: UIViewController, BrowseViewDelegate {
         browseView.posterImagesForIMDBId.removeAll()
     }
     
+    // Fetch the popular items from the API, handle any errors displaying them to the user
     func getPopularItems(contentType: ContentType) async {
         do {
             browseView.IMDBItems = try await imdbConnector.getPopular(contentType: contentType)
@@ -83,6 +86,8 @@ class BrowseViewController: UIViewController, BrowseViewDelegate {
             }
         }
     }
+
+    // MARK: - Navigation
     
     func browseView(_ browseView: BrowseView, didSelectItemAt indexPath: IndexPath) {
         let senderCell = browseView.itemCollectionView.cellForItem(at: indexPath)

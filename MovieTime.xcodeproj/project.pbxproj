@@ -55,6 +55,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A80EBA2427BF3DC800AC65C7 /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A80EBA2027BF223A00AC65C7 /* CartCell.swift */,
+				A8E61E4E27BDCF1700BA20AB /* ImagePosterCollectionViewCell.swift */,
+				A8E61E4F27BDCF1700BA20AB /* ImagePosterCollectionViewCell.xib */,
+			);
+			path = "Custom Cells";
+			sourceTree = "<group>";
+		};
+		A80EBA2527BF3E1200AC65C7 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A8E3581D27BB1CBF0049D77B /* BrowseViewController.swift */,
+				A8E61E4A27BDC6ED00BA20AB /* LibraryViewController.swift */,
+				A8DE70D027BCABB50008C50C /* ItemDetailViewController.swift */,
+				A80EBA2227BF236D00AC65C7 /* CartViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A80EBA2627BF3E2500AC65C7 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				A80EBA2427BF3DC800AC65C7 /* Custom Cells */,
+				A8E61E4827BDC5F200BA20AB /* BrowseView.xib */,
+				A8E61E4427BDC01500BA20AB /* BrowseView.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
 		A8E3580D27BB1CBF0049D77B = {
 			isa = PBXGroup;
 			children = (
@@ -76,17 +107,10 @@
 			children = (
 				A8E3581927BB1CBF0049D77B /* AppDelegate.swift */,
 				A8E3581B27BB1CBF0049D77B /* SceneDelegate.swift */,
-				A8E3581D27BB1CBF0049D77B /* BrowseViewController.swift */,
+				A80EBA2527BF3E1200AC65C7 /* ViewControllers */,
+				A80EBA2627BF3E2500AC65C7 /* CustomViews */,
 				A8E3582F27BC49AE0049D77B /* IMDBConnect.swift */,
-				A8E61E4A27BDC6ED00BA20AB /* LibraryViewController.swift */,
-				A8E61E4827BDC5F200BA20AB /* BrowseView.xib */,
-				A8E61E4427BDC01500BA20AB /* BrowseView.swift */,
-				A8DE70D027BCABB50008C50C /* ItemDetailViewController.swift */,
 				A8E3581F27BB1CBF0049D77B /* Main.storyboard */,
-				A80EBA2027BF223A00AC65C7 /* CartCell.swift */,
-				A80EBA2227BF236D00AC65C7 /* CartViewController.swift */,
-				A8E61E4E27BDCF1700BA20AB /* ImagePosterCollectionViewCell.swift */,
-				A8E61E4F27BDCF1700BA20AB /* ImagePosterCollectionViewCell.xib */,
 				A8E3582227BB1CC00049D77B /* Assets.xcassets */,
 				A8E3582427BB1CC00049D77B /* LaunchScreen.storyboard */,
 				A8E3582727BB1CC00049D77B /* Info.plist */,

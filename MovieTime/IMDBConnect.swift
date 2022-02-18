@@ -18,13 +18,13 @@ class IMDBConnect {
     let rentDuration = TimeInterval(60*3) // 3 minutes
     let itemUnitPrice = 2.99
     
-    private(set) var favorites = Set<IMBDItem>()
+    private(set) var favorites = Set<IMDBItem>()
     private var itemLibrary = Set<LibraryItem>()
         
-    var cart = Set<IMBDItem>()
+    var cart = Set<IMDBItem>()
     
     init() {
-        if let favs: [IMBDItem] = loadItems(pathName: "favorites") {
+        if let favs: [IMDBItem] = loadItems(pathName: "favorites") {
             for fav in favs {
                 favorites.insert(fav)
             }
@@ -44,8 +44,9 @@ class IMDBConnect {
     }
     
     // Returns an array of popular items from the API
-    func getPopular(contentType: ContentType) async throws -> [IMBDItem] {
-        var items = [IMBDItem]()
+    func getPopular(contentType: ContentType) async throws -> [IMDBItem] {
+       
+        var items = [IMDBItem]()
         var url: URL
         switch contentType {
         case .Movie:
@@ -83,7 +84,7 @@ class IMDBConnect {
                 thumnailPoster = FetchableImage(imageURL: imageURL)
             }
             
-            let itemObj = IMBDItem(title: item["title"] as! String,
+            let itemObj = IMDBItem(title: item["title"] as! String,
                                    year: item["year"] as! String,
                                    fullResPoster: fullResPoster,
                                    thumbnailPoster: thumnailPoster ?? fullResPoster,
@@ -94,8 +95,8 @@ class IMDBConnect {
         return items
     }
     
-    // Returns the details of the passed IMBD item
-    func getTitleDetail(for imdbID: String) async throws -> IMBDItemDetail {
+    // Returns the details of the passed IMDB item
+    func getTitleDetail(for imdbID: String) async throws -> IMDBItemDetail {
         let url = constructAPIURL(withQuery: "Title", arguments: imdbID)!
         
         let (data, response) = try await URLSession.shared.data(from: url)
@@ -123,7 +124,7 @@ class IMDBConnect {
             thumnailPoster = FetchableImage(imageURL: imageURL)
         }
         
-        let itemObj = IMBDItemDetail(title: json["title"] as! String,
+        let itemObj = IMDBItemDetail(title: json["title"] as! String,
                                      year: json["year"] as! String,
                                      fullResPoster: fullResPoster,
                                      thumbnailPoster: thumnailPoster ?? fullResPoster,
@@ -187,7 +188,7 @@ class IMDBConnect {
         return items
     }
     
-    // Returns arrays of poster images and backdrop banners for the passed IMBD item
+    // Returns arrays of poster images and backdrop banners for the passed IMDB item
     func getImages(for imdbID: String) async throws -> PosterImages {
         let url = constructAPIURL(withQuery: "Posters", arguments: imdbID)!
         
@@ -228,13 +229,13 @@ class IMDBConnect {
         
     }
     
-    func addFavorite(item: IMBDItem) {
+    func addFavorite(item: IMDBItem) {
         favorites.insert(item)
         print("ading \(item.title) to favs")
         saveItems(items: favorites.sorted(by: {$0.imdbID < $1.imdbID}), pathName: "favorites")
     }
     
-    func removeFavorite(item: IMBDItem) {
+    func removeFavorite(item: IMDBItem) {
         favorites.remove(item)
         print("removing \(item.title) from favs")
         saveItems(items: favorites.sorted(by: {$0.imdbID < $1.imdbID}), pathName: "favorites")
@@ -271,13 +272,13 @@ class IMDBConnect {
         }
     }
     
-    func addToLibrary(item: IMBDItem) {
+    func addToLibrary(item: IMDBItem) {
         itemLibrary.insert(LibraryItem(item: item, dateAdded: Date()))
         print("ading \(item.title) to library")
         saveItems(items: itemLibrary.sorted(by: {$0.item.imdbID < $1.item.imdbID}), pathName: "library")
     }
     
-    func removeFromLibrary(item: IMBDItem) {
+    func removeFromLibrary(item: IMDBItem) {
         if let itemInLibrary = itemLibrary.first(where: {$0.item.imdbID == item.imdbID}) {
             itemLibrary.remove(itemInLibrary)
             print("removing \(item.title) from library")
@@ -290,8 +291,8 @@ class IMDBConnect {
     
 }
 
-struct IMBDItem: Codable, Hashable {
-    static func == (lhs: IMBDItem, rhs: IMBDItem) -> Bool {
+struct IMDBItem: Codable, Hashable {
+    static func == (lhs: IMDBItem, rhs: IMDBItem) -> Bool {
         lhs.imdbID == rhs.imdbID
     }
     
@@ -304,7 +305,7 @@ struct IMBDItem: Codable, Hashable {
 }
 
 struct LibraryItem: Codable, Hashable {
-    var item: IMBDItem
+    var item: IMDBItem
     var dateAdded: Date
 }
 
@@ -317,8 +318,8 @@ struct IMDBSearchResult {
     
     // We dont want to fetch de full details for every result because
     // we have limited API calls (100 per day)
-    func toPartialIMBDItem() -> IMBDItem {
-        return IMBDItem(title: title,
+    func toPartialIMDBItem() -> IMDBItem {
+        return IMDBItem(title: title,
                         year: "",
                         fullResPoster: fullResPoster,
                         thumbnailPoster: thumbnailPoster,
@@ -326,9 +327,9 @@ struct IMDBSearchResult {
                         crew: "")
     }
     
-    func fetchIMBDItem() async throws -> IMBDItem {
+    func fetchIMDBItem() async throws -> IMDBItem {
         let details = try await IMDBConnect.sharedInstance.getTitleDetail(for: imdbID)
-        return IMBDItem(title: title,
+        return IMDBItem(title: title,
                         year: details.year,
                         fullResPoster: fullResPoster,
                         thumbnailPoster: thumbnailPoster,
@@ -337,7 +338,7 @@ struct IMDBSearchResult {
     }
 }
 
-struct IMBDItemDetail {
+struct IMDBItemDetail {
     var title: String
     var year: String
     var fullResPoster: FetchableImage

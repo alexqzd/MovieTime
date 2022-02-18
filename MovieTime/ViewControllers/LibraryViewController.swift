@@ -12,7 +12,7 @@ class LibraryViewController: UIViewController, BrowseViewDelegate, UIAdaptivePre
     @IBOutlet weak var browseView: BrowseView!
     
     let imdb = IMDBConnect.sharedInstance
-    var items = [IMBDItem]()
+    var items = [IMDBItem]()
     
     @IBOutlet weak var searchBar: UIView!
     
@@ -26,6 +26,7 @@ class LibraryViewController: UIViewController, BrowseViewDelegate, UIAdaptivePre
         browseView.delegate = self
         favoritesToggleButton.setTitle("Show favorites", for: .normal)
         
+        // Setup search controller
         searchController.searchResultsUpdater = self
         searchController.delegate = self
         searchController.searchBar.delegate = self
@@ -69,6 +70,7 @@ class LibraryViewController: UIViewController, BrowseViewDelegate, UIAdaptivePre
         UIApplication.shared.sendAction(#selector(self.resignFirstResponder), to:nil, from:nil, for:nil)
     }
     
+    // Switch between library and favorites
     @IBAction func favotitesToggleButtonTapped(_ sender: UIButton) {
         if isDisplayingFavs {
             items = imdb.getItemLibrary().sorted(by: {$0.dateAdded > $1.dateAdded}).map({$0.item})
@@ -93,6 +95,8 @@ class LibraryViewController: UIViewController, BrowseViewDelegate, UIAdaptivePre
         browseView.itemCollectionView.reloadData()
     }
     
+    // MARK: Navigation
+
     func browseView(_ browseView: BrowseView, didSelectItemAt indexPath: IndexPath) {
         let senderCell = browseView.itemCollectionView.cellForItem(at: indexPath)
         performSegue(withIdentifier: "goToDetailFromLibrary", sender: senderCell)
@@ -109,6 +113,7 @@ class LibraryViewController: UIViewController, BrowseViewDelegate, UIAdaptivePre
     }
     
     
+    // Update items in case they were removed in the detail view
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController)
     {
         // Only called when the sheet is dismissed by DRAGGING.

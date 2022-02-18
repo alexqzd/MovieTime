@@ -16,7 +16,7 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
     
     let searchController = UISearchController(searchResultsController: nil)
     
-    var items = [IMBDItem]()
+    var items = [IMDBItem]()
     
     var currentContent = ContentType.Movie // Content type to display (Movies / TV Shows)
     
@@ -70,16 +70,16 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
         
         browseView.delegate = self
         
+        // Configure the search bar
         searchController.searchResultsUpdater = self
         searchController.delegate = self
         searchController.searchBar.delegate = self
         searchController.searchBar.backgroundColor = UIColor.clear
         searchBar.addSubview(searchController.searchBar)
         searchController.searchBar.autoresizingMask = .flexibleWidth
-        
         self.navigationItem.titleView = searchController.searchBar
         
-        
+        // To dismiss the keyboard when the user taps outside the keyboard
         let tap = UITapGestureRecognizer(target: self, action: #selector(BrowseViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
@@ -107,6 +107,7 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
         do {
             items = try await imdbConnector.getPopular(contentType: contentType)
         } catch {
+            // Let the user know that something went wrong
             let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
             DispatchQueue.main.async{
@@ -135,16 +136,13 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
         // Query the API
         Task {
             let results = try! await imdbConnector.search(query: searchBar.text ?? "")
-            let items = results.map({$0.toPartialIMBDItem()})
+            let items = results.map({$0.toPartialIMDBItem()})
             browseView.IMDBItems = items
             browseView.itemCollectionView.reloadData()
         }
     }
     
-    func willPresentSearchController(_ searchController: UISearchController) {
-        //        mainPulleyVC.setDrawerPosition(position: .open, animated: true)
-    }
-    
+    // Reload popular items when the user taps Cancel on the search bar
     func didDismissSearchController(_ searchController: UISearchController) {
         browseView.IMDBItems = items
         browseView.itemCollectionView.reloadData()

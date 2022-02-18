@@ -12,7 +12,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var cartTableView: UITableView!
     
     let imdb = IMDBConnect.sharedInstance
-    var cartItems = [IMBDItem]()
+    var cartItems = [IMDBItem]()
     var posterImagesForIMDBId: [String: UIImage] = [:]
     @IBOutlet weak var totalTextLabel: UILabel!
     @IBOutlet weak var rentAllButton: UIButton!
@@ -26,14 +26,15 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(_ animated: Bool) {
         cartItems = imdb.cart.sorted(by: {$0.title > $1.title})
-        totalTextLabel.text = "Total: $\(imdb.itemUnitPrice * Double(cartItems.count))"
+        calculateTotal()
         rentAllButton.isEnabled = cartItems.count > 0
         cartTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Make sure that the total is updated when the cart changes
         rentAllButton.isEnabled = cartItems.count > 0
-        totalTextLabel.text = "Total: $\(imdb.itemUnitPrice * Double(cartItems.count))"
+        calculateTotal()
         return cartItems.count
     }
     
@@ -110,9 +111,13 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         imdb.cart.removeAll()
         cartItems.removeAll()
-        totalTextLabel.text = "Total: \(imdb.itemUnitPrice * Double(cartItems.count))"
+        calculateTotal()
         rentAllButton.isEnabled = cartItems.count > 0
         cartTableView.reloadData()
+    }
+
+    func calculateTotal() {
+        totalTextLabel.text = "Total: $\(imdb.itemUnitPrice * Double(cartItems.count))"
     }
 
     // MARK: - Navigation

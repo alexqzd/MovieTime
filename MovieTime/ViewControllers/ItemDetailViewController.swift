@@ -19,7 +19,7 @@ class ItemDetailViewController: UIViewController {
     @IBOutlet weak var headerImageView: UIImageView!
     @IBOutlet weak var detailsStackView: UIStackView!
     
-    var item: IMBDItem!
+    var item: IMDBItem!
     
     let imdb = IMDBConnect.sharedInstance
     

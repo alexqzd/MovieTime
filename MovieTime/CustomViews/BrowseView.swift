@@ -18,7 +18,7 @@ class BrowseView: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlow
     
     private let itemsPerRow: CGFloat = 3
     
-    var IMDBItems = [IMBDItem]()
+    var IMDBItems = [IMDBItem]()
     var posterImagesForIMDBId: [String: UIImage] = [:]
     
     var delegate: BrowseViewDelegate?

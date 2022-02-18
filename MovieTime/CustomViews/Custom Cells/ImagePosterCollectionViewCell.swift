@@ -11,7 +11,7 @@ class ImagePosterCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var moviePosterImageView: UIImageView!
     @IBOutlet weak var movieTitleLabel: UILabel!
-    var item: IMBDItem?
+    var item: IMDBItem?
     
     override func awakeFromNib() {
         super.awakeFromNib()

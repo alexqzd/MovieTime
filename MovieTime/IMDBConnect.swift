@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 
 class IMDBConnect {
-    private let IMDBAPIKey = "k_2tcj88j3"
+    private let IMDBAPIKey = "k_92a0o0kv"
     private let IMDBBaseURL = "https://imdb-api.com/en/API/"
     
     static let sharedInstance = IMDBConnect()
     
     // Time before the rent expires and the item is removed from library
-//    private(set) let rentDuration = TimeInterval(60*60*24*3) // 3 days
-    let rentDuration = TimeInterval(60*3) // 3 minutes
+    let rentDuration = TimeInterval(60*60*24*3) // 3 days
+//  let rentDuration = TimeInterval(60*3) // 3 minutes
     
     let itemUnitPrice = 2.99
     

@@ -14,10 +14,27 @@ class IMDBConnect {
     
     static let sharedInstance = IMDBConnect()
     
+//    private(set) let rentDuration = TimeInterval(60*60*24*3) // 3 days
+    let rentDuration = TimeInterval(60*3) // 3 minutes
+    let itemUnitPrice = 2.99
+    
     private(set) var favorites = Set<IMBDItem>()
+    private var itemLibrary = Set<LibraryItem>()
+        
+    var cart = Set<IMBDItem>()
     
     init() {
-        loadFavorites()
+        if let favs: [IMBDItem] = loadItems(pathName: "favorites") {
+            for fav in favs {
+                favorites.insert(fav)
+            }
+        }
+        
+        if let lib: [LibraryItem] = loadItems(pathName: "library") {
+            for item in lib {
+                itemLibrary.insert(item)
+            }
+        }
     }
     
     // Returns a complete URL to query for the passed query string
@@ -214,47 +231,61 @@ class IMDBConnect {
     func addFavorite(item: IMBDItem) {
         favorites.insert(item)
         print("ading \(item.title) to favs")
-        saveFavorites()
+        saveItems(items: favorites.sorted(by: {$0.imdbID < $1.imdbID}), pathName: "favorites")
     }
     
     func removeFavorite(item: IMBDItem) {
         favorites.remove(item)
         print("removing \(item.title) from favs")
-        saveFavorites()
+        saveItems(items: favorites.sorted(by: {$0.imdbID < $1.imdbID}), pathName: "favorites")
     }
     
-    private func saveFavorites() {
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("favorites")
-        
+    func getItemLibrary() -> Set<LibraryItem> {
+        itemLibrary = itemLibrary.filter({$0.dateAdded + rentDuration > Date()})
+        return itemLibrary
+    }
+    
+    private func saveItems<T: Codable>(items: [T], pathName: String) {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(pathName)
         do {
-            let array: [IMBDItem] = favorites.sorted(by: {$0.imdbID > $1.imdbID})
-            
             let encoder = JSONEncoder()
-            let data = try encoder.encode(array)
+            let data = try encoder.encode(items)
             try data.write(to: path)
         } catch {
             print("ERROR: \(error)")
         }
     }
     
-    @objc private func loadFavorites() {
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("favorites")
+    private func loadItems<T: Codable>(pathName: String) -> T? {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(pathName)
         guard let data = try? Data(contentsOf: path) else {
-            print("No favorites stored")
-            return }
-        let decoder = JSONDecoder()
-        
-        if let savedFavorites = try? decoder.decode([IMBDItem].self, from: data) {
-            print("Saved favorites:")
-            for fav in savedFavorites {
-                print(fav.title)
-                favorites.insert(fav)
-            }
-            
-        } else {
-            print("No favorites stored")
-            
+            print("No items in \(pathName)")
+            return nil
         }
+        let decoder = JSONDecoder()
+        if let savedFavorites = try? decoder.decode(T.self, from: data) {
+            return savedFavorites
+        } else {
+            print("No items in \(pathName)")
+            return nil
+        }
+    }
+    
+    func addToLibrary(item: IMBDItem) {
+        itemLibrary.insert(LibraryItem(item: item, dateAdded: Date()))
+        print("ading \(item.title) to library")
+        saveItems(items: itemLibrary.sorted(by: {$0.item.imdbID < $1.item.imdbID}), pathName: "library")
+    }
+    
+    func removeFromLibrary(item: IMBDItem) {
+        if let itemInLibrary = itemLibrary.first(where: {$0.item.imdbID == item.imdbID}) {
+            itemLibrary.remove(itemInLibrary)
+            print("removing \(item.title) from library")
+            saveItems(items: itemLibrary.sorted(by: {$0.item.imdbID < $1.item.imdbID}), pathName: "library")
+        } else {
+            print("item \(item.title) not in library")
+        }
+
     }
     
 }
@@ -270,6 +301,11 @@ struct IMBDItem: Codable, Hashable {
     var thumbnailPoster: FetchableImage
     var imdbID: String
     var crew: String
+}
+
+struct LibraryItem: Codable, Hashable {
+    var item: IMBDItem
+    var dateAdded: Date
 }
 
 struct IMDBSearchResult {

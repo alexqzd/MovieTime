@@ -23,6 +23,8 @@ class ItemDetailViewController: UIViewController {
     
     let imdb = IMDBConnect.sharedInstance
     
+    var itemIsInLibrary = false
+    
     @IBAction func toggleFavorite(_ sender: UIButton) {
         if imdb.favorites.contains(item) {
             imdb.removeFavorite(item: item)
@@ -40,11 +42,26 @@ class ItemDetailViewController: UIViewController {
         headerImageView.backgroundColor = .lightGray
         detailLabel.text = ""
         detailsStackView.isHidden = true
-        if imdb.favorites.contains(item) {
+        
+        if imdb.favorites.contains(where: {$0.imdbID == item.imdbID}) {
             favoritesButton.setTitle("Remove favorite", for: .normal)
         } else {
             favoritesButton.setTitle("Add favorite", for: .normal)
         }
+        
+        let libraryItem = imdb.getItemLibrary().first(where: {$0.item.imdbID == item.imdbID})
+        
+        if libraryItem != nil && libraryItem!.dateAdded + imdb.rentDuration > Date() { // If rent is still valid
+            actionButton.setTitle("Watch Now", for: .normal)
+            itemIsInLibrary = true
+        } else if imdb.cart.contains(item) {
+            actionButton.setTitle("Remove from cart", for: .normal)
+            itemIsInLibrary = false
+        } else {
+            actionButton.setTitle("Add to cart", for: .normal)
+            itemIsInLibrary = false
+        }
+        
         Task {
             do {
                 var image = try? await imdb.getImages(for: item.imdbID).backdrops.randomElement()?.fetch()
@@ -93,6 +110,20 @@ class ItemDetailViewController: UIViewController {
                 }
             }
             
+        }
+    }
+    
+    @IBAction func actionButtonTapped(_ sender: UIButton) {
+        if !itemIsInLibrary && !imdb.cart.contains(item) { // Not rented nor in cart, then add to cart
+            imdb.cart.insert(item) // then add it
+            actionButton.setTitle("Remove from cart", for: .normal)
+        } else if imdb.cart.contains(item) { // In cart
+            imdb.cart.insert(item) // then remove it
+            actionButton.setTitle("Add to cart", for: .normal)
+        } else if itemIsInLibrary {
+            if let url = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") {
+                UIApplication.shared.open(url)
+            }
         }
     }
 }

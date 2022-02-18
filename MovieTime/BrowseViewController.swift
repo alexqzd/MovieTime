@@ -73,9 +73,6 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
         searchController.searchResultsUpdater = self
         searchController.delegate = self
         searchController.searchBar.delegate = self
-        //        searchController.searchBar.isTranslucent = true
-        //        searchController.searchBar.alpha = 1
-        //        searchController.searchBar.backgroundImage = UIImage()
         searchController.searchBar.backgroundColor = UIColor.clear
         searchBar.addSubview(searchController.searchBar)
         searchController.searchBar.autoresizingMask = .flexibleWidth
@@ -93,6 +90,11 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
             self.browseView.IMDBItems = self.items
             browseView.itemCollectionView.reloadData()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchController.dismiss(animated: true, completion: nil)  // Search will stay in view if we don't dismiss it
     }
     
     override func didReceiveMemoryWarning() {

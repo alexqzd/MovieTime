@@ -62,12 +62,26 @@ class ItemDetailViewController: UIViewController {
             itemIsInLibrary = false
         }
         
+        // Add spinner indicator
+        let child = SpinnerViewController()
+        
+        // add the spinner view controller
+        addChild(child)
+        child.view.frame = headerImageView.frame
+        headerImageView.addSubview(child.view)
+        child.didMove(toParent: self)
+        
         Task {
             do {
                 var image = try? await imdb.getImages(for: item.imdbID).backdrops.randomElement()?.fetch()
                 if image == nil {
                     image = try await item.fullResPoster.fetch()
                 }
+                // then remove the spinner view controller when the image is loaded
+                child.willMove(toParent: nil)
+                child.view.removeFromSuperview()
+                child.removeFromParent()
+                
                 UIView.transition(with: self.headerImageView,
                                   duration: 1,
                                   options: .transitionCurlDown,
@@ -75,13 +89,12 @@ class ItemDetailViewController: UIViewController {
                 },
                                   completion: nil)
             } catch {
-                let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
                 DispatchQueue.main.async{
+                    let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
                     self.present(alert, animated: true, completion: nil)
                 }
             }
-            
         }
         Task {
             do {
@@ -103,9 +116,10 @@ class ItemDetailViewController: UIViewController {
                     } completion: { _ in }
                 }
             } catch {
-                let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
+                awardsLabel.text = ""
                 DispatchQueue.main.async{
+                    let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
                     self.present(alert, animated: true, completion: nil)
                 }
             }

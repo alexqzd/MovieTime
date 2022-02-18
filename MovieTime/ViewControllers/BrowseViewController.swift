@@ -27,32 +27,34 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
     // Items to display on the content type selector button
     var menuItems: [UIAction] {
         return [
-            UIAction(title: "Movies", image: UIImage(systemName: "video"), handler: { (_) in
-                self.currentContent = .Movie
-                Task {
-                    await self.getPopularItems(contentType: self.currentContent)
-                    self.browseView.IMDBItems = self.items
-                    self.browseView.itemCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
-                        {
-                            self.browseView.itemCollectionView.reloadSections(IndexSet(integer: 0))
-                        }, completion: { (finished:Bool) -> Void in
-                        })
-                }
-            }),
-            UIAction(title: "TV Shows", image: UIImage(systemName: "tv"), handler: { [self] (_) in
-                self.currentContent = .TVShow
-                Task {
-                    await self.getPopularItems(contentType: self.currentContent)
-                    self.browseView.IMDBItems = self.items
-                    self.browseView.itemCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
-                        {
-                            self.browseView.itemCollectionView.reloadSections(IndexSet(integer: 0))
-                        }, completion: { (finished:Bool) -> Void in
-                        })
-                }
-            })
+            UIAction(title: "Movies", image: UIImage(systemName: "video"), handler: { [self] _ in reloadViewWith(contentType: .Movie)}),
+            UIAction(title: "TV Shows", image: UIImage(systemName: "tv"), handler: { [self] _ in reloadViewWith(contentType: .TVShow)})
             
         ]
+    }
+    
+    func reloadViewWith(contentType: ContentType) {
+        self.currentContent = contentType
+        
+        Task {
+            self.browseView.IMDBItems.removeAll()
+            self.items.removeAll()
+            self.browseView.itemCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
+                {
+                    self.browseView.itemCollectionView.reloadSections(IndexSet(integer: 0))
+                }, completion: { (finished:Bool) -> Void in
+                }
+            )
+            self.browseView.statusLabel.isHidden = false
+            self.browseView.statusLabel.text = "Loading..."
+            await self.getPopularItems(contentType: self.currentContent)
+            self.browseView.IMDBItems = self.items
+            self.browseView.itemCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
+                {
+                    self.browseView.itemCollectionView.reloadSections(IndexSet(integer: 0))
+                }, completion: { (finished:Bool) -> Void in
+                })
+        }
     }
     
     // Pop up menu for the content type selector button
@@ -83,9 +85,11 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
         let tap = UITapGestureRecognizer(target: self, action: #selector(BrowseViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
-        
+                
         // Load data from the API
         Task {
+            self.browseView.statusLabel.isHidden = false
+            self.browseView.statusLabel.text = "Loading..."
             await getPopularItems(contentType: currentContent)
             self.browseView.IMDBItems = self.items
             browseView.itemCollectionView.reloadData()
@@ -108,9 +112,9 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
             items = try await imdbConnector.getPopular(contentType: contentType)
         } catch {
             // Let the user know that something went wrong
-            let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
             DispatchQueue.main.async{
+                let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -119,10 +123,10 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
     // MARK: - Item search
     func updateSearchResults(for searchController: UISearchController) {
         let searchTerm = searchController.searchBar.text ?? ""
-
+        
         // We don't want to query the API until the user taps Search
         // because we have limited API calls (100 per day)
-
+        
         if searchTerm.isEmpty {
             browseView.IMDBItems = items
         } else {
@@ -132,13 +136,19 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+        self.browseView.statusLabel.isHidden = false
+        self.browseView.statusLabel.text = "Loading..."
         // Query the API
         Task {
             let results = try! await imdbConnector.search(query: searchBar.text ?? "")
             let items = results.map({$0.toPartialIMDBItem()})
             browseView.IMDBItems = items
-            browseView.itemCollectionView.reloadData()
+            self.browseView.itemCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
+                {
+                    self.browseView.itemCollectionView.reloadSections(IndexSet(integer: 0))
+                }, completion: { (finished:Bool) -> Void in
+                }
+            )
         }
     }
     

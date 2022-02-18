@@ -18,6 +18,8 @@ class BrowseView: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlow
     
     private let itemsPerRow: CGFloat = 3
     
+    @IBOutlet weak var statusLabel: UILabel!
+    
     var IMDBItems = [IMDBItem]()
     var posterImagesForIMDBId: [String: UIImage] = [:]
     
@@ -55,6 +57,9 @@ class BrowseView: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlow
         itemCollectionView.delegate = self
         let nibCell = UINib(nibName: "ImagePosterCollectionViewCell", bundle: nil)
         itemCollectionView.register(nibCell, forCellWithReuseIdentifier: cellReuseIdentifier)
+        
+        statusLabel.isHidden = false
+        statusLabel.text = "Loading..."
     }
     
     // MARK: - Collection view data source and delegate
@@ -63,6 +68,12 @@ class BrowseView: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlow
     }
     
     func collectionView(_ collectionView: UICollectionView,numberOfItemsInSection section: Int) -> Int {
+        if IMDBItems.count > 0 {
+            statusLabel.isHidden = true
+        } else {
+            statusLabel.isHidden = false
+            statusLabel.text = "Nothing here..."
+        }
         return IMDBItems.count
     }
     

@@ -74,7 +74,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M4W-4F-x08" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="811.59420289855075" y="-183.48214285714286"/>
+            <point key="canvasLocation" x="0.0" y="501"/>
         </scene>
         <!--Item Detail View Controller-->
         <scene sceneID="bdc-ev-fbQ">
@@ -191,7 +191,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kg2-8M-xEE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="812" y="546"/>
+            <point key="canvasLocation" x="-804" y="1234"/>
         </scene>
         <!--Cart-->
         <scene sceneID="HpR-Qn-shX">
@@ -303,7 +303,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Ev-aY-Skg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-804.34782608695662" y="545.75892857142856"/>
+            <point key="canvasLocation" x="-804" y="501"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="HWw-il-ijy">
@@ -322,7 +322,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0R6-DF-PV8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="22" y="-183"/>
+            <point key="canvasLocation" x="-804" y="-225"/>
         </scene>
         <!--Browse-->
         <scene sceneID="Ckd-wp-jES">
@@ -397,11 +397,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ob5-qU-hpX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="21.739130434782609" y="545.75892857142856"/>
+            <point key="canvasLocation" x="-1622" y="501"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="XKf-Is-lqh"/>
+        <segue reference="kfV-vO-1CR"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="cart" catalog="system" width="128" height="102"/>

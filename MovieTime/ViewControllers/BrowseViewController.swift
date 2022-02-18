@@ -140,15 +140,24 @@ class BrowseViewController: UIViewController, BrowseViewDelegate, UISearchContro
         self.browseView.statusLabel.text = "Loading..."
         // Query the API
         Task {
-            let results = try! await imdbConnector.search(query: searchBar.text ?? "")
-            let items = results.map({$0.toPartialIMDBItem()})
-            browseView.IMDBItems = items
-            self.browseView.itemCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
-                {
-                    self.browseView.itemCollectionView.reloadSections(IndexSet(integer: 0))
-                }, completion: { (finished:Bool) -> Void in
+            do {
+                let results = try await imdbConnector.search(query: searchBar.text ?? "")
+                let items = results.map({$0.toPartialIMDBItem()})
+                browseView.IMDBItems = items
+                self.browseView.itemCollectionView.performBatchUpdates( // This will reload the collection view with teh default animation
+                    {
+                        self.browseView.itemCollectionView.reloadSections(IndexSet(integer: 0))
+                    }, completion: { (finished:Bool) -> Void in
+                    }
+                )
+            } catch {
+                // Let the user know that something went wrong
+                DispatchQueue.main.async{
+                    let alert = UIAlertController(title: "Error", message: "Unexpected error: \(error).", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in }))
+                    self.present(alert, animated: true, completion: nil)
                 }
-            )
+            }
         }
     }
     

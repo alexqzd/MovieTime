@@ -65,7 +65,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         // otherwise a race condidion may cause the image to be saved but not displayed
         if cartCell.posterImageView.image != nil { return }
         Task {
-            let posterImage = try! await item.thumbnailPoster.fetch()
+            let posterImage = try? await item.thumbnailPoster.fetch()
             posterImagesForIMDBId[item.imdbID] = posterImage
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }

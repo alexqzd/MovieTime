@@ -105,9 +105,10 @@ class BrowseView: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlow
         // otherwise a race condidion may cause the image to be saved but not displayed
         if movieCell.moviePosterImageView.image != nil { return }
         Task {
-            let posterImage = try! await movie.thumbnailPoster.fetch()
-            posterImagesForIMDBId[movie.imdbID] = posterImage
-            collectionView.reloadItems(at: [indexPath])
+            if let posterImage = try? await movie.thumbnailPoster.fetch() {
+                posterImagesForIMDBId[movie.imdbID] = posterImage
+                collectionView.reloadItems(at: [indexPath])
+            }
         }
     }
     
@@ -117,9 +118,11 @@ class BrowseView: UIView, UICollectionViewDelegate, UICollectionViewDelegateFlow
             let movie = IMDBItems[indexPath.item]
             if posterImagesForIMDBId[movie.imdbID] != nil { return }
             Task {
-                let posterImage = try! await movie.thumbnailPoster.fetch()
-                posterImagesForIMDBId[movie.imdbID] = posterImage
-            }}
+                if let posterImage = try? await movie.thumbnailPoster.fetch() {
+                    posterImagesForIMDBId[movie.imdbID] = posterImage
+                }
+            }
+        }
     }
     
     // MARK: - Collection View Flow Layout Delegate
